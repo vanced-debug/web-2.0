@@ -3,29 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KUKAR PRINTING - Jasa Percetakan Kutai Kartanegara</title>
+    <title>KUKAR PRINTING - 3D Experience</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Poppins:wght@500;600;700;800&display=swap" rel="stylesheet">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
     <style>
-        /* --- 1. VARIABLES & RESET --- */
+        /* --- 1. CONFIG & VARIABLES --- */
         :root {
-            --primary: #2563eb;       /* Biru Profesional */
-            --primary-dark: #1d4ed8;
-            --secondary: #0f172a;     /* Dark Slate */
-            --accent: #f59e0b;        /* Gold */
-            --success: #10b981;       /* Hijau */
-            --bg-light: #f8fafc;      /* Background Utama */
-            --bg-white: #ffffff;
-            --border: #e2e8f0;
-            --text-main: #1e293b;
-            --text-muted: #64748b;
-            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-            --shadow-3d: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+            --primary: #3b82f6;       /* Neon Blue */
+            --primary-glow: rgba(59, 130, 246, 0.5);
+            --accent: #fbbf24;        /* Gold */
+            --bg-dark: #020617;       /* Deepest Slate */
+            --bg-card: rgba(15, 23, 42, 0.6); /* Glass Dark */
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border: rgba(255, 255, 255, 0.1);
+            --glass-blur: blur(12px);
+            --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
         * {
@@ -37,251 +35,257 @@
 
         body {
             font-family: 'Inter', sans-serif;
-            background-color: var(--bg-light);
+            background-color: var(--bg-dark);
             color: var(--text-main);
-            line-height: 1.6;
             overflow-x: hidden;
+            line-height: 1.6;
         }
 
-        h1, h2, h3, h4, h5, h6 {
-            font-family: 'Poppins', sans-serif;
-            color: var(--secondary);
-            line-height: 1.2;
-        }
-
-        a { text-decoration: none; color: inherit; }
-        ul { list-style: none; }
-
-        /* --- 2. COMPONENTS --- */
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            padding: 0.75rem 1.5rem;
-            border-radius: 0.5rem;
-            font-weight: 600;
-            font-family: 'Poppins', sans-serif;
-            transition: all 0.3s ease;
-            cursor: pointer;
-            border: none;
-            gap: 0.5rem;
-        }
-
-        .btn-primary {
-            background-color: var(--primary);
-            color: white;
-            box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.3);
-        }
-
-        .btn-primary:hover {
-            background-color: var(--primary-dark);
-            transform: translateY(-2px);
-            box-shadow: 0 10px 15px -3px rgba(37, 99, 235, 0.4);
-        }
-
-        .btn-secondary {
-            background-color: white;
-            border: 1px solid var(--border);
-            color: var(--text-main);
-        }
-
-        .btn-secondary:hover {
-            background-color: var(--bg-light);
-            border-color: var(--text-muted);
-        }
-
-        .btn-success {
-            background-color: var(--success);
-            color: white;
-            box-shadow: 0 4px 6px -1px rgba(16, 185, 129, 0.3);
-        }
-
-        .btn-success:hover {
-            background-color: #059669;
-            transform: translateY(-2px);
-        }
-
-        .section-header {
-            text-align: center;
-            margin-bottom: 3rem;
-        }
-
-        .section-header h2 {
-            font-size: clamp(2rem, 4vw, 2.5rem);
-            margin-bottom: 0.5rem;
-        }
-
-        .section-header p {
-            color: var(--text-muted);
-            font-size: 1.125rem;
-        }
-
-        /* --- 3. LAYOUT --- */
-        
-        /* Navbar */
-        .navbar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 80px;
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(12px);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 5%;
-            z-index: 1000;
-            box-shadow: var(--shadow-sm);
-            transition: all 0.3s ease;
-        }
-
-        .navbar.scrolled {
-            height: 70px;
-            box-shadow: var(--shadow-md);
-        }
-
-        .logo {
-            font-size: 1.5rem;
-            font-weight: 800;
-            color: var(--primary);
-            font-family: 'Poppins', sans-serif;
-            letter-spacing: -0.5px;
-        }
-
-        /* Hero Section */
-        .hero {
-            padding: 8rem 5% 5rem;
-            background: linear-gradient(135deg, var(--bg-light) 0%, #e0e7ff 100%);
-            text-align: center;
-            min-height: 85vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .hero h1 {
-            font-size: clamp(2.5rem, 6vw, 4rem);
-            font-weight: 800;
-            margin-bottom: 1.5rem;
-            background: -webkit-linear-gradient(45deg, var(--secondary), var(--primary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .hero p {
-            font-size: 1.25rem;
-            color: var(--text-muted);
-            max-width: 700px;
-            margin-bottom: 2.5rem;
-        }
-
-        .hero-btn {
-            padding: 1rem 2.5rem;
-            font-size: 1.125rem;
-        }
-
-        /* Services Section */
-        .services {
-            padding: 5rem 5%;
-            background-color: var(--bg-white);
-        }
-
-        .grid-3 {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 2rem;
-        }
-
-        .card {
-            background: white;
-            border: 2px solid var(--border);
-            border-radius: 1rem;
-            padding: 2rem;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .card:hover {
-            border-color: var(--primary);
-            transform: translateY(-8px);
-            box-shadow: var(--shadow-lg);
-        }
-
-        .card-icon {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-            display: block;
-        }
-
-        .card h3 {
-            font-size: 1.25rem;
-            margin-bottom: 0.75rem;
-        }
-
-        .card p {
-            color: var(--text-muted);
-            font-size: 0.95rem;
-        }
-
-        /* Contact Section */
-        .contact {
-            padding: 5rem 5%;
-            background-color: var(--bg-light);
-        }
-
-        .contact-card {
-            background: white;
-            padding: 2rem;
-            border-radius: 1rem;
-            box-shadow: var(--shadow-md);
-            text-align: center;
-            border: 1px solid var(--border);
-        }
-
-        .contact-label {
-            font-size: 0.875rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: var(--text-muted);
-            margin-bottom: 0.5rem;
-            font-weight: 600;
-        }
-
-        .contact-value {
-            font-size: 1.1rem;
-            font-weight: 600;
-            color: var(--secondary);
-        }
-        
-        .contact-value a {
-            color: var(--primary);
-        }
-
-        /* Footer */
-        footer {
-            background-color: var(--secondary);
-            color: white;
-            padding: 3rem 5%;
-            text-align: center;
-        }
-
-        footer p {
-            opacity: 0.8;
-            margin-bottom: 0.5rem;
-        }
-
-        /* --- 4. MODAL & FORM --- */
-        .modal-overlay {
+        /* Canvas Background 3D */
+        #canvas-container {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(15, 23, 42, 0.7);
+            z-index: -1;
+            background: radial-gradient(circle at center, #1e293b 0%, #020617 100%);
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+        }
+
+        /* --- 2. COMPONENTS --- */
+        
+        /* Glass Button */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.1);
             backdrop-filter: blur(5px);
+        }
+
+        .btn-primary {
+            background: rgba(37, 99, 235, 0.8);
+            color: white;
+            box-shadow: 0 0 20px var(--primary-glow);
+        }
+
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            transition: 0.5s;
+        }
+
+        .btn-primary:hover::before { left: 100%; }
+        
+        .btn-primary:hover {
+            transform: scale(1.05);
+            background: #2563eb;
+            box-shadow: 0 0 30px var(--primary-glow), 0 0 10px var(--primary);
+        }
+
+        .btn-secondary {
+            background: rgba(255,255,255,0.05);
+            color: white;
+        }
+        .btn-secondary:hover { background: rgba(255,255,255,0.1); }
+
+        /* --- 3. LAYOUT --- */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Navbar */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 2rem;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 100;
+            background: rgba(2, 6, 23, 0.7);
+            backdrop-filter: var(--glass-blur);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            background: linear-gradient(to right, #fff, var(--primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 20px rgba(37, 99, 235, 0.5);
+        }
+
+        /* Hero */
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            flex-direction: column;
+            padding-top: 60px;
+        }
+
+        .hero h1 {
+            font-size: clamp(3rem, 6vw, 5rem);
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            text-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .hero h1 span {
+            color: var(--primary);
+            text-shadow: 0 0 20px var(--primary);
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            color: var(--text-muted);
+            max-width: 600px;
+            margin-bottom: 3rem;
+        }
+
+        /* 3D Cards Section */
+        .section-title {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+        
+        .section-title h2 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(to right, #fff, var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .services {
+            padding: 8rem 0;
+            perspective: 1000px; /* Essential for 3D */
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        /* 3D TILT CARD */
+        .card-3d-wrap {
+            position: relative;
+            transform-style: preserve-3d;
+            perspective: 1000px;
+        }
+
+        .card-3d {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            padding: 3rem 2rem;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            transition: transform 0.1s; /* Smooth movement handled by JS */
+            transform-style: preserve-3d;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Shine effect */
+        .card-3d::after {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(125deg, rgba(255,255,255,0.1) 0%, transparent 40%, transparent 60%, rgba(255,255,255,0.05) 100%);
+            pointer-events: none;
+        }
+
+        .card-icon {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+            transform: translateZ(50px); /* PUSH OUT TEXT 3D */
+            text-shadow: 0 10px 20px rgba(0,0,0,0.3);
+        }
+
+        .card-3d h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            transform: translateZ(30px);
+            color: white;
+        }
+
+        .card-3d p {
+            color: var(--text-muted);
+            transform: translateZ(20px);
+        }
+
+        /* Contact Section */
+        .contact {
+            padding: 5rem 0;
+            background: rgba(0,0,0,0.3);
+        }
+
+        .contact-card {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid var(--border);
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            transition: 0.3s;
+        }
+        
+        .contact-card:hover {
+            background: rgba(255,255,255,0.08);
+            transform: translateY(-5px);
+            border-color: var(--primary);
+        }
+
+        .contact-card a { color: var(--primary); text-decoration: none; }
+
+        /* Footer */
+        footer {
+            padding: 3rem 0;
+            text-align: center;
+            border-top: 1px solid var(--border);
+            background: #020617;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* --- 4. MODAL FORM (Holographic Style) --- */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(8px);
             z-index: 2000;
             display: none;
             justify-content: center;
@@ -290,29 +294,25 @@
             transition: opacity 0.3s ease;
         }
 
-        .modal-overlay.active {
-            display: flex;
-            opacity: 1;
-        }
+        .modal-overlay.active { display: flex; opacity: 1; }
 
         .modal-container {
-            background: white;
-            width: 95%;
-            max-width: 700px;
-            max-height: 90vh;
+            width: 95%; max-width: 700px;
+            background: rgba(15, 23, 42, 0.95);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            box-shadow: 0 0 50px rgba(37, 99, 235, 0.2);
             border-radius: 20px;
+            padding: 0;
+            color: white;
             position: relative;
+            max-height: 90vh;
             display: flex;
             flex-direction: column;
-            box-shadow: var(--shadow-3d);
-            transform: translateY(20px);
-            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-            overflow: hidden;
+            transform: scale(0.9);
+            transition: 0.3s;
         }
 
-        .modal-overlay.active .modal-container {
-            transform: translateY(0);
-        }
+        .modal-overlay.active .modal-container { transform: scale(1); }
 
         .modal-header {
             padding: 1.5rem 2rem;
@@ -320,722 +320,477 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: white;
-            z-index: 10;
-        }
-
-        .modal-title h3 {
-            font-size: 1.25rem;
-            color: var(--primary);
-        }
-
-        .modal-title p {
-            font-size: 0.875rem;
-            color: var(--text-muted);
         }
 
         .close-btn {
-            background: none;
-            border: none;
-            font-size: 1.5rem;
-            color: var(--text-muted);
-            cursor: pointer;
-            padding: 5px;
+            background: none; border: none; color: white; font-size: 2rem; cursor: pointer;
         }
 
         .modal-body {
             padding: 2rem;
             overflow-y: auto;
-            flex: 1;
         }
 
-        /* Progress Bar */
-        .progress-container {
-            padding: 1.5rem 2rem 0;
-        }
-
-        .progress-bar-bg {
-            height: 6px;
-            background: var(--border);
-            border-radius: 3px;
-            position: relative;
-            margin-bottom: 2rem;
-        }
-
-        .progress-bar-fill {
-            height: 100%;
-            background: var(--primary);
-            border-radius: 3px;
-            width: 0%;
-            transition: width 0.4s ease;
-        }
-
-        /* Form Steps */
-        .step {
-            display: none;
-            animation: fadeIn 0.4s ease;
-        }
-
-        .step.active {
-            display: block;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* Form Elements */
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-
-        .form-label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 500;
-            color: var(--secondary);
-        }
-
+        /* Form Inputs Dark Mode */
         .form-input, .form-textarea {
             width: 100%;
-            padding: 0.875rem;
-            border: 2px solid var(--border);
-            border-radius: 0.5rem;
-            font-family: 'Inter', sans-serif;
-            font-size: 1rem;
-            transition: all 0.2s;
+            background: rgba(0,0,0,0.3);
+            border: 1px solid var(--border);
+            color: white;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-top: 0.5rem;
+            font-family: inherit;
         }
 
         .form-input:focus, .form-textarea:focus {
             border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+            box-shadow: 0 0 15px rgba(37, 99, 235, 0.2);
         }
 
-        .form-textarea {
-            min-height: 120px;
-            resize: vertical;
-        }
-
-        .info-box {
-            background: #eff6ff;
-            border-left: 4px solid var(--primary);
+        .option-card, .color-card, .radio-card {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--border);
+            border-radius: 12px;
             padding: 1rem;
-            border-radius: 0 0.5rem 0.5rem 0;
-            margin-bottom: 1.5rem;
-            display: flex;
-            gap: 1rem;
-        }
-
-        .info-icon { font-size: 1.5rem; }
-        .info-text h4 { font-size: 0.95rem; margin-bottom: 0.25rem; }
-        .info-text p { font-size: 0.875rem; color: var(--text-muted); }
-
-        /* Option Cards (Selection) */
-        .option-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 1rem;
-        }
-
-        .option-card {
-            border: 2px solid var(--border);
-            border-radius: 0.75rem;
-            padding: 1.5rem;
+            cursor: pointer;
+            transition: 0.3s;
             text-align: center;
-            cursor: pointer;
-            transition: all 0.2s;
+            color: white;
         }
 
-        .option-card:hover {
+        .option-card:hover, .color-card:hover, .radio-card:hover {
             border-color: var(--primary);
-            background-color: #eff6ff;
+            background: rgba(37, 99, 235, 0.1);
         }
 
-        .option-card.selected {
+        .option-card.selected, .color-card.selected, .radio-card.selected {
             border-color: var(--primary);
-            background-color: #eff6ff;
-            box-shadow: 0 0 0 2px var(--primary);
+            background: rgba(37, 99, 235, 0.2);
+            box-shadow: 0 0 15px rgba(37, 99, 235, 0.3);
         }
 
-        /* Color Options */
-        .color-card {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 1rem;
-            border: 2px solid var(--border);
-            border-radius: 0.75rem;
-            cursor: pointer;
+        .progress-bar-bg {
+            background: rgba(255,255,255,0.1);
+            height: 4px;
+            margin: 0 2rem;
+            border-radius: 2px;
         }
-
-        .color-preview {
-            width: 100%;
-            height: 60px;
-            border-radius: 0.5rem;
-            margin-bottom: 0.5rem;
-            border: 1px solid rgba(0,0,0,0.1);
-        }
-
-        .color-card.selected {
-            border-color: var(--primary);
-            background: #eff6ff;
-        }
-
-        /* Design Style Radio */
-        .radio-card {
-            display: flex;
-            align-items: flex-start;
-            gap: 1rem;
-            padding: 1rem;
-            border: 2px solid var(--border);
-            border-radius: 0.75rem;
-            margin-bottom: 0.75rem;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .radio-card:hover {
-            border-color: var(--primary);
+        .progress-bar-fill {
+            background: var(--primary);
+            height: 100%;
+            width: 0%;
+            transition: 0.3s;
+            box-shadow: 0 0 10px var(--primary);
         }
         
-        .radio-card.selected {
-            border-color: var(--primary);
-            background-color: #eff6ff;
+        .step { display: none; animation: fadeIn 0.5s; }
+        .step.active { display: block; }
+        
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); }}
+
+        /* Option Grid */
+        .grid-options {
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem;
         }
 
-        .radio-indicator {
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            border: 2px solid var(--text-muted);
-            margin-top: 2px;
-            flex-shrink: 0;
-            position: relative;
+        @media(max-width: 768px) {
+            .grid-options { grid-template-columns: 1fr; }
+            .hero h1 { font-size: 2.5rem; }
         }
 
-        .radio-card.selected .radio-indicator {
-            border-color: var(--primary);
-        }
-
-        .radio-card.selected .radio-indicator::after {
-            content: '';
-            position: absolute;
-            top: 50%; left: 50%;
-            transform: translate(-50%, -50%);
-            width: 10px; height: 10px;
-            background: var(--primary);
-            border-radius: 50%;
-        }
-
-        .btn-group {
-            display: flex;
-            justify-content: flex-end;
-            gap: 1rem;
-            margin-top: 2rem;
-        }
-
-        /* --- 5. RESPONSIVE --- */
-        @media (max-width: 1023px) {
-            .grid-3 { grid-template-columns: repeat(2, 1fr); }
-        }
-
-        @media (max-width: 768px) {
-            .grid-3, .option-grid { grid-template-columns: 1fr; }
-            .hero { padding-top: 6rem; }
-            .modal-container { height: 100vh; max-height: 100vh; width: 100%; border-radius: 0; }
-            .btn-group { flex-direction: column-reverse; }
-            .btn { width: 100%; }
-        }
     </style>
 </head>
 <body>
 
-    <nav class="navbar" id="navbar">
+    <div id="canvas-container"></div>
+
+    <nav>
         <div class="logo">KUKAR PRINTING</div>
-        <button class="btn btn-primary" onclick="openOrderModal()">Pesan Sekarang</button>
+        <button class="btn btn-primary" style="padding: 0.5rem 1.5rem; font-size: 0.9rem;" onclick="openModal()">Pesan</button>
     </nav>
 
-    <header class="hero" id="home">
-        <h1>Percetakan Profesional di<br>Kutai Kartanegara</h1>
-        <p>Cetak banner, spanduk, stiker & desain grafis berkualitas tinggi dengan harga terjangkau dan proses cepat.</p>
-        <button class="btn btn-primary hero-btn" onclick="openOrderModal()">
-            Mulai Pesan Sekarang &rarr;
-        </button>
-    </header>
-
-    <section class="services" id="services">
-        <div class="section-header">
-            <h2>Layanan Kami</h2>
-            <p>Solusi percetakan lengkap untuk kebutuhan bisnis Anda</p>
+    <section class="hero">
+        <div class="container">
+            <p>SELAMAT DATANG DI MASA DEPAN PERCETAKAN</p>
+            <h1>Cetak Ide Anda Menjadi<br><span>Kenyataan 3D</span></h1>
+            <p style="margin: 1.5rem auto;">Layanan cetak Banner, Spanduk, dan Desain Grafis Profesional di Kutai Kartanegara dengan kualitas premium.</p>
+            
+            <button class="btn btn-primary" onclick="openModal()">
+                Mulai Pesan Sekarang
+            </button>
         </div>
-        <div class="grid-3">
-            <div class="card">
-                <span class="card-icon">🖼️</span>
-                <h3>Banner & Spanduk</h3>
-                <p>Banner dan spanduk premium untuk promosi bisnis, event, dan keperluan advertising. Berbagai ukuran dan bahan tersedia.</p>
+    </section>
+
+    <section class="services">
+        <div class="container">
+            <div class="section-title">
+                <h2>Layanan Premium</h2>
+                <p>Gerakkan mouse Anda di atas kartu untuk efek 3D</p>
             </div>
-            <div class="card">
-                <span class="card-icon">🎨</span>
-                <h3>Desain Grafis</h3>
-                <p>Jasa desain profesional untuk logo, brosur, katalog, dan materi marketing yang menarik dan efektif.</p>
-            </div>
-            <div class="card">
-                <span class="card-icon">🏷️</span>
-                <h3>Stiker Custom</h3>
-                <p>Cetak stiker dengan berbagai bahan dan finishing. Cocok untuk branding produk dan merchandise.</p>
+            
+            <div class="grid-3">
+                <div class="card-3d-wrap" onmousemove="tiltCard(event, this)" onmouseleave="resetCard(this)">
+                    <div class="card-3d">
+                        <div class="card-icon">🖼️</div>
+                        <h3>Banner & Spanduk</h3>
+                        <p>Cetak resolusi tinggi untuk kebutuhan promosi bisnis Anda dengan bahan tahan lama.</p>
+                    </div>
+                </div>
+
+                <div class="card-3d-wrap" onmousemove="tiltCard(event, this)" onmouseleave="resetCard(this)">
+                    <div class="card-3d">
+                        <div class="card-icon">🎨</div>
+                        <h3>Desain Grafis</h3>
+                        <p>Tim kreatif kami siap mewujudkan logo, brosur, dan branding visual yang memukau.</p>
+                    </div>
+                </div>
+
+                <div class="card-3d-wrap" onmousemove="tiltCard(event, this)" onmouseleave="resetCard(this)">
+                    <div class="card-3d">
+                        <div class="card-icon">🏷️</div>
+                        <h3>Stiker Custom</h3>
+                        <p>Stiker cutting dan print dengan presisi tinggi untuk merchandise dan label produk.</p>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
 
-    <section class="contact" id="contact">
-        <div class="section-header">
-            <h2>Hubungi Kami</h2>
-            <p>Lokasi dan kontak untuk pemesanan langsung</p>
-        </div>
-        <div class="grid-3">
-            <div class="contact-card">
-                <div class="contact-icon" style="font-size: 2rem; margin-bottom:1rem;">📱</div>
-                <div class="contact-label">WhatsApp</div>
-                <div class="contact-value"><a href="https://wa.me/6285845982732">0858 4598 2732</a></div>
+    <section class="contact">
+        <div class="container">
+            <div class="section-title">
+                <h2>Hubungi Kami</h2>
             </div>
-            <div class="contact-card">
-                <div class="contact-icon" style="font-size: 2rem; margin-bottom:1rem;">📍</div>
-                <div class="contact-label">Alamat</div>
-                <div class="contact-value">Jl. Pesut No.10 RT.14, Kel. Timbau, Tenggarong</div>
-            </div>
-            <div class="contact-card">
-                <div class="contact-icon" style="font-size: 2rem; margin-bottom:1rem;">⏰</div>
-                <div class="contact-label">Jam Operasional</div>
-                <div class="contact-value">Senin - Sabtu, 08.00 - 17.00 WITA</div>
+            <div class="grid-3">
+                <div class="contact-card">
+                    <h3>WhatsApp</h3>
+                    <p><a href="https://wa.me/6285845982732">0858 4598 2732</a></p>
+                </div>
+                <div class="contact-card">
+                    <h3>Lokasi</h3>
+                    <p>Tenggarong, Kutai Kartanegara</p>
+                </div>
+                <div class="contact-card">
+                    <h3>Jam Buka</h3>
+                    <p>Sen - Sab: 08.00 - 17.00</p>
+                </div>
             </div>
         </div>
     </section>
 
     <footer>
-        <p>&copy; 2026 KUKAR PRINTING - Percetakan Profesional Kutai Kartanegara</p>
-        <p style="font-size: 0.9rem; opacity: 0.6;">Solusi Terpercaya untuk Kebutuhan Cetak & Desain Anda</p>
+        <div class="container">
+            <p>&copy; 2026 KUKAR PRINTING - Modern Printing Solution</p>
+        </div>
     </footer>
 
     <div class="modal-overlay" id="orderModal">
         <div class="modal-container">
             <div class="modal-header">
-                <div class="modal-title">
-                    <h3 id="stepTitle">Pilih Layanan</h3>
-                    <p id="stepSubtitle">Layanan apa yang Anda butuhkan?</p>
+                <div>
+                    <h3 style="color:var(--primary)" id="stepTitle">Pilih Layanan</h3>
+                    <small id="stepSubtitle" style="color:var(--text-muted)">Langkah 1 dari 7</small>
                 </div>
-                <button class="close-btn" onclick="closeOrderModal()">&times;</button>
+                <button class="close-btn" onclick="closeModal()">&times;</button>
             </div>
             
-            <div class="progress-container">
-                <div class="progress-bar-bg">
-                    <div class="progress-bar-fill" id="progressBar"></div>
-                </div>
+            <div class="progress-bar-bg">
+                <div class="progress-bar-fill" id="progressBar"></div>
             </div>
 
             <div class="modal-body">
                 <div class="step active" id="step1">
-                    <div class="option-grid">
-                        <div class="option-card" onclick="selectService('Banner & Spanduk', this)">
-                            <div style="font-size: 2.5rem; margin-bottom:0.5rem">🖼️</div>
-                            <h4>Banner & Spanduk</h4>
+                    <div class="grid-options">
+                        <div class="option-card" onclick="nextStep(1, 'Banner & Spanduk')">
+                            <h1>🖼️</h1>
+                            <h4>Banner</h4>
                         </div>
-                        <div class="option-card" onclick="selectService('Desain Grafis', this)">
-                            <div style="font-size: 2.5rem; margin-bottom:0.5rem">🎨</div>
-                            <h4>Desain Grafis</h4>
+                        <div class="option-card" onclick="nextStep(1, 'Desain Grafis')">
+                            <h1>🎨</h1>
+                            <h4>Desain</h4>
                         </div>
-                        <div class="option-card" onclick="selectService('Stiker Custom', this)">
-                            <div style="font-size: 2.5rem; margin-bottom:0.5rem">🏷️</div>
-                            <h4>Stiker Custom</h4>
+                        <div class="option-card" onclick="nextStep(1, 'Stiker Custom')">
+                            <h1>🏷️</h1>
+                            <h4>Stiker</h4>
                         </div>
                     </div>
                 </div>
 
                 <div class="step" id="step2">
-                    <div class="info-box">
-                        <div class="info-icon">💡</div>
-                        <div class="info-text">
-                            <h4>Tips Ukuran</h4>
-                            <p>Ukuran standar banner: 3x1m, 4x2m, 5x3m. Untuk stiker bisa mulai dari 5x5cm.</p>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Ukuran yang Diinginkan *</label>
-                        <input type="text" class="form-input" id="inputUkuran" placeholder="Contoh: 3x2 meter, 100x50 cm, atau A4">
-                    </div>
-                    <div class="btn-group">
-                        <button class="btn btn-secondary" onclick="prevStep()">← Kembali</button>
-                        <button class="btn btn-primary" onclick="nextStep()">Lanjut →</button>
+                    <label>Ukuran yang diinginkan:</label>
+                    <input type="text" class="form-input" id="inputUkuran" placeholder="Contoh: 3x1 Meter">
+                    <div style="margin-top:2rem; display:flex; gap:1rem; justify-content:end;">
+                        <button class="btn btn-secondary" onclick="prevStep()">Kembali</button>
+                        <button class="btn btn-primary" onclick="nextStep(2)">Lanjut</button>
                     </div>
                 </div>
 
                 <div class="step" id="step3">
-                    <div class="form-group">
-                        <label class="form-label">Jumlah yang Dipesan *</label>
-                        <input type="number" class="form-input" id="inputJumlah" min="1" placeholder="Contoh: 1, 5, 10">
-                    </div>
-                    <div class="btn-group">
-                        <button class="btn btn-secondary" onclick="prevStep()">← Kembali</button>
-                        <button class="btn btn-primary" onclick="nextStep()">Lanjut →</button>
+                    <label>Jumlah Pesanan:</label>
+                    <input type="number" class="form-input" id="inputJumlah" placeholder="1">
+                    <div style="margin-top:2rem; display:flex; gap:1rem; justify-content:end;">
+                        <button class="btn btn-secondary" onclick="prevStep()">Kembali</button>
+                        <button class="btn btn-primary" onclick="nextStep(3)">Lanjut</button>
                     </div>
                 </div>
 
                 <div class="step" id="step4">
-                    <div class="form-group">
-                        <label class="form-label">Nama Usaha / Judul Banner *</label>
-                        <input type="text" class="form-input" id="inputNamaUsaha" placeholder="Contoh: Warung Mama Gigi, Grand Opening">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Tagline / Kalimat Tambahan (Opsional)</label>
-                        <input type="text" class="form-input" id="inputTagline" placeholder="Contoh: Makanan Enak Harga Terjangkau">
-                    </div>
-                    <div class="btn-group">
-                        <button class="btn btn-secondary" onclick="prevStep()">← Kembali</button>
-                        <button class="btn btn-primary" onclick="nextStep()">Lanjut →</button>
+                    <label>Nama Usaha / Judul:</label>
+                    <input type="text" class="form-input" id="inputNama" placeholder="Nama Banner...">
+                    <label style="margin-top:1rem; display:block">Tagline (Opsional):</label>
+                    <input type="text" class="form-input" id="inputTagline">
+                    <div style="margin-top:2rem; display:flex; gap:1rem; justify-content:end;">
+                        <button class="btn btn-secondary" onclick="prevStep()">Kembali</button>
+                        <button class="btn btn-primary" onclick="nextStep(4)">Lanjut</button>
                     </div>
                 </div>
 
                 <div class="step" id="step5">
-                    <div class="option-grid" style="grid-template-columns: repeat(3, 1fr);">
-                        <div class="color-card" onclick="selectColor('Merah & Putih', this)">
-                            <div class="color-preview" style="background: linear-gradient(135deg, #ef4444, white);"></div>
-                            <span>Merah Putih</span>
-                        </div>
-                        <div class="color-card" onclick="selectColor('Biru & Putih', this)">
-                            <div class="color-preview" style="background: linear-gradient(135deg, #3b82f6, white);"></div>
-                            <span>Biru Putih</span>
-                        </div>
-                        <div class="color-card" onclick="selectColor('Hitam & Kuning', this)">
-                            <div class="color-preview" style="background: linear-gradient(135deg, #1f2937, #fbbf24);"></div>
-                            <span>Hitam Kuning</span>
-                        </div>
-                        <div class="color-card" onclick="selectColor('Hijau & Putih', this)">
-                            <div class="color-preview" style="background: linear-gradient(135deg, #10b981, white);"></div>
-                            <span>Hijau Putih</span>
-                        </div>
-                        <div class="color-card" onclick="selectColor('Oranye & Putih', this)">
-                            <div class="color-preview" style="background: linear-gradient(135deg, #f97316, white);"></div>
-                            <span>Oranye Putih</span>
-                        </div>
-                        <div class="color-card" onclick="selectColor('Custom', this)">
-                            <div class="color-preview" style="background: white; border: 2px dashed #ccc; display:flex; align-items:center; justify-content:center;">🎨</div>
-                            <span>Custom</span>
-                        </div>
+                    <div class="grid-options" style="grid-template-columns: repeat(3, 1fr);">
+                        <div class="color-card" onclick="setColor('Merah Putih')"><div style="height:30px; background:linear-gradient(to right, red, white)"></div>Merah Putih</div>
+                        <div class="color-card" onclick="setColor('Biru Putih')"><div style="height:30px; background:linear-gradient(to right, blue, white)"></div>Biru Putih</div>
+                        <div class="color-card" onclick="setColor('Hitam Emas')"><div style="height:30px; background:linear-gradient(to right, black, gold)"></div>Hitam Emas</div>
+                        <div class="color-card" onclick="setColor('Custom')">🎨 Custom</div>
                     </div>
-                    <div class="form-group" id="customColorGroup" style="display:none; margin-top: 1.5rem;">
-                        <label class="form-label">Sebutkan Kombinasi Warna Custom *</label>
-                        <input type="text" class="form-input" id="inputCustomColor" placeholder="Contoh: Pink & Ungu, Biru Muda & Kuning">
-                    </div>
-                    <div class="btn-group">
-                        <button class="btn btn-secondary" onclick="prevStep()">← Kembali</button>
-                        <button class="btn btn-primary" onclick="nextStep()">Lanjut →</button>
+                    <input type="text" class="form-input" id="inputWarnaCustom" placeholder="Warna custom..." style="display:none; margin-top:1rem;">
+                    
+                    <div style="margin-top:2rem; display:flex; gap:1rem; justify-content:end;">
+                        <button class="btn btn-secondary" onclick="prevStep()">Kembali</button>
+                        <button class="btn btn-primary" onclick="nextStep(5)">Lanjut</button>
                     </div>
                 </div>
 
                 <div class="step" id="step6">
-                    <div class="info-box">
-                        <div class="info-icon">📝</div>
-                        <div class="info-text">
-                            <h4>Informasi Konten</h4>
-                            <p>Tulis semua informasi yang ingin ditampilkan di banner/desain Anda.</p>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Informasi yang Ditampilkan *</label>
-                        <textarea class="form-textarea" id="inputKonten" placeholder="Contoh:&#10;- Nomor HP: 0858 xxxx&#10;- Alamat: Jl. Melati&#10;- Daftar Menu..."></textarea>
-                    </div>
-                    <div class="btn-group">
-                        <button class="btn btn-secondary" onclick="prevStep()">← Kembali</button>
-                        <button class="btn btn-primary" onclick="nextStep()">Lanjut →</button>
+                    <label>Isi Tulisan di Banner:</label>
+                    <textarea class="form-textarea" id="inputKonten" rows="4" placeholder="Tulis semua info yang mau ditampilkan..."></textarea>
+                    <div style="margin-top:2rem; display:flex; gap:1rem; justify-content:end;">
+                        <button class="btn btn-secondary" onclick="prevStep()">Kembali</button>
+                        <button class="btn btn-primary" onclick="nextStep(6)">Lanjut</button>
                     </div>
                 </div>
 
                 <div class="step" id="step7">
-                    <label class="form-label">Gaya Desain *</label>
-                    <div class="radio-card" onclick="selectStyle('Modern & Minimalis', this)">
-                        <div class="radio-indicator"></div>
-                        <div>
-                            <strong>Modern & Minimalis</strong>
-                            <div style="font-size:0.85rem; color:var(--text-muted)">Desain bersih, simpel, elegan</div>
-                        </div>
+                    <label>Gaya Desain:</label>
+                    <div class="grid-options" style="margin-top:0.5rem">
+                        <div class="radio-card" onclick="setStyle('Minimalis')">Minimalis</div>
+                        <div class="radio-card" onclick="setStyle('Ramai')">Ramai</div>
+                        <div class="radio-card" onclick="setStyle('Elegan')">Elegan</div>
                     </div>
-                    <div class="radio-card" onclick="selectStyle('Ramai & Eye-Catching', this)">
-                        <div class="radio-indicator"></div>
-                        <div>
-                            <strong>Ramai & Eye-Catching</strong>
-                            <div style="font-size:0.85rem; color:var(--text-muted)">Banyak elemen, warna cerah, menarik perhatian</div>
-                        </div>
-                    </div>
-                    <div class="radio-card" onclick="selectStyle('Klasik & Profesional', this)">
-                        <div class="radio-indicator"></div>
-                        <div>
-                            <strong>Klasik & Profesional</strong>
-                            <div style="font-size:0.85rem; color:var(--text-muted)">Formal, elegan, untuk bisnis serius</div>
-                        </div>
-                    </div>
-
-                    <div class="form-group" style="margin-top:1.5rem">
-                        <label class="form-label">Elemen Gambar/Ilustrasi (Opsional)</label>
-                        <input type="text" class="form-input" id="inputElemen" placeholder="Contoh: Gambar ayam goreng, Ilustrasi chef">
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">Catatan Tambahan (Opsional)</label>
-                        <textarea class="form-textarea" id="inputCatatan" style="min-height:80px" placeholder="Tulis permintaan khusus lainnya"></textarea>
-                    </div>
-
-                    <div class="btn-group">
-                        <button class="btn btn-secondary" onclick="prevStep()">← Kembali</button>
-                        <button class="btn btn-success" onclick="submitOrder()">✓ Kirim ke WhatsApp</button>
+                    <label style="margin-top:1rem; display:block">Catatan Tambahan:</label>
+                    <textarea class="form-textarea" id="inputCatatan"></textarea>
+                    
+                    <div style="margin-top:2rem; display:flex; gap:1rem; justify-content:end;">
+                        <button class="btn btn-secondary" onclick="prevStep()">Kembali</button>
+                        <button class="btn btn-primary" style="background:var(--accent); color:black" onclick="sendToWA()">Kirim WhatsApp 🚀</button>
                     </div>
                 </div>
-
             </div>
         </div>
     </div>
 
     <script>
-        // Data Store
-        const orderData = {
-            layanan: '',
-            ukuran: '',
-            jumlah: '',
-            namaUsaha: '',
-            tagline: '',
-            warna: '',
-            customWarna: '',
-            informasi: '',
-            gaya: '',
-            elemen: '',
-            catatan: ''
-        };
+        // --- 1. THREE.JS BACKGROUND SETUP ---
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+        
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.getElementById('canvas-container').appendChild(renderer.domElement);
 
+        // Create Particles
+        const geometry = new THREE.BufferGeometry();
+        const particlesCount = 700;
+        const posArray = new Float32Array(particlesCount * 3);
+
+        for(let i = 0; i < particlesCount * 3; i++) {
+            // Spread particles
+            posArray[i] = (Math.random() - 0.5) * 15; 
+        }
+
+        geometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+
+        // Material with Neon Blue
+        const material = new THREE.PointsMaterial({
+            size: 0.03,
+            color: 0x3b82f6,
+            transparent: true,
+            opacity: 0.8,
+        });
+
+        // Mesh (Points)
+        const particlesMesh = new THREE.Points(geometry, material);
+        scene.add(particlesMesh);
+
+        // Add connecting lines (optional structure)
+        const lineMaterial = new THREE.LineBasicMaterial({ color: 0x3b82f6, opacity: 0.1, transparent: true });
+        const linesGeometry = new THREE.WireframeGeometry(new THREE.IcosahedronGeometry(4, 1));
+        const linesMesh = new THREE.LineSegments(linesGeometry, lineMaterial);
+        scene.add(linesMesh);
+
+        camera.position.z = 5;
+
+        // Mouse Interaction
+        let mouseX = 0;
+        let mouseY = 0;
+
+        document.addEventListener('mousemove', (event) => {
+            mouseX = event.clientX / window.innerWidth - 0.5;
+            mouseY = event.clientY / window.innerHeight - 0.5;
+        });
+
+        // Animation Loop
+        const clock = new THREE.Clock();
+
+        function animate() {
+            requestAnimationFrame(animate);
+            const elapsedTime = clock.getElapsedTime();
+
+            // Rotate entire system slowly
+            particlesMesh.rotation.y = elapsedTime * 0.05;
+            linesMesh.rotation.x = elapsedTime * 0.05;
+            linesMesh.rotation.y = elapsedTime * 0.05;
+
+            // Mouse parallax effect
+            particlesMesh.rotation.x += 0.05 * (mouseY - particlesMesh.rotation.x);
+            particlesMesh.rotation.y += 0.05 * (mouseX - particlesMesh.rotation.y);
+
+            renderer.render(scene, camera);
+        }
+        animate();
+
+        // Handle Resize
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+
+        // --- 2. 3D TILT CARD LOGIC ---
+        function tiltCard(e, cardWrap) {
+            const card = cardWrap.querySelector('.card-3d');
+            const rect = cardWrap.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            
+            // Calculate rotation based on mouse position
+            const xRotation = -((y - rect.height/2) / 10); // Rotate X axis based on Y position
+            const yRotation = (x - rect.width/2) / 10;   // Rotate Y axis based on X position
+            
+            card.style.transform = `rotateX(${xRotation}deg) rotateY(${yRotation}deg)`;
+        }
+
+        function resetCard(cardWrap) {
+            const card = cardWrap.querySelector('.card-3d');
+            card.style.transform = `rotateX(0) rotateY(0)`;
+        }
+
+
+        // --- 3. FORM WIZARD LOGIC ---
         let currentStep = 1;
-        const totalSteps = 7;
+        let orderData = {};
 
-        // Headers Configuration
-        const stepHeaders = {
-            1: { title: "Pilih Layanan", subtitle: "Layanan apa yang Anda butuhkan?" },
-            2: { title: "Ukuran Pesanan", subtitle: "Berapa ukuran yang diinginkan?" },
-            3: { title: "Jumlah Pesanan", subtitle: "Berapa banyak yang akan dicetak?" },
-            4: { title: "Nama & Judul", subtitle: "Apa nama usaha atau judul yang akan dicetak?" },
-            5: { title: "Kombinasi Warna", subtitle: "Pilih warna untuk desain Anda" },
-            6: { title: "Isi Konten", subtitle: "Informasi apa yang ditampilkan?" },
-            7: { title: "Detail Desain", subtitle: "Tentukan gaya dan elemen desain" }
-        };
-
-        // DOM Elements
-        const modal = document.getElementById('orderModal');
-        const progressBar = document.getElementById('progressBar');
-        const titleEl = document.getElementById('stepTitle');
-        const subtitleEl = document.getElementById('stepSubtitle');
-
-        // Functions
-        function openOrderModal() {
-            modal.classList.add('active');
-            document.body.style.overflow = 'hidden';
-            resetForm();
-            updateUI();
+        function openModal() {
+            document.getElementById('orderModal').classList.add('active');
+            updateProgress();
         }
 
-        function closeOrderModal() {
-            modal.classList.remove('active');
-            document.body.style.overflow = 'auto';
+        function closeModal() {
+            document.getElementById('orderModal').classList.remove('active');
         }
 
-        // Close on outside click
-        modal.addEventListener('click', (e) => {
-            if (e.target === modal) closeOrderModal();
-        });
-
-        // Close on ESC
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && modal.classList.contains('active')) {
-                closeOrderModal();
-            }
-        });
-
-        // Navbar Scroll Effect
-        window.addEventListener('scroll', () => {
-            const navbar = document.getElementById('navbar');
-            if (window.scrollY > 50) {
-                navbar.classList.add('scrolled');
-            } else {
-                navbar.classList.remove('scrolled');
-            }
-        });
-
-        function updateUI() {
-            // Update Headers
-            titleEl.textContent = stepHeaders[currentStep].title;
-            subtitleEl.textContent = stepHeaders[currentStep].subtitle;
-
-            // Update Progress Bar
-            const progress = ((currentStep - 1) / (totalSteps - 1)) * 100;
-            progressBar.style.width = `${progress}%`;
-
-            // Show/Hide Steps
-            document.querySelectorAll('.step').forEach((el, index) => {
-                if (index + 1 === currentStep) {
-                    el.classList.add('active');
-                    // Auto focus first input
-                    const firstInput = el.querySelector('input, textarea');
-                    if (firstInput) setTimeout(() => firstInput.focus(), 100);
-                } else {
-                    el.classList.remove('active');
-                }
+        function updateProgress() {
+            const total = 7;
+            const pct = ((currentStep - 1) / (total - 1)) * 100;
+            document.getElementById('progressBar').style.width = pct + '%';
+            document.getElementById('stepSubtitle').innerText = `Langkah ${currentStep} dari ${total}`;
+            
+            // Show/Hide steps
+            document.querySelectorAll('.step').forEach((el, idx) => {
+                el.classList.remove('active');
+                if(idx + 1 === currentStep) el.classList.add('active');
             });
+
+            // Update Titles
+            const titles = ["Pilih Layanan", "Ukuran", "Jumlah", "Identitas", "Warna", "Konten", "Finalisasi"];
+            document.getElementById('stepTitle').innerText = titles[currentStep-1];
         }
 
-        function nextStep() {
-            if (validateStep(currentStep)) {
-                // Save data from inputs before moving
-                saveStepData(currentStep);
-                if (currentStep < totalSteps) {
-                    currentStep++;
-                    updateUI();
-                }
+        function nextStep(step, val) {
+            if(step === 1) orderData.layanan = val;
+            if(step === 2) orderData.ukuran = document.getElementById('inputUkuran').value;
+            if(step === 3) orderData.jumlah = document.getElementById('inputJumlah').value;
+            if(step === 4) {
+                orderData.nama = document.getElementById('inputNama').value;
+                orderData.tagline = document.getElementById('inputTagline').value;
             }
+            if(step === 5) {
+                if(orderData.warna === 'Custom') orderData.warnaDetail = document.getElementById('inputWarnaCustom').value;
+                else orderData.warnaDetail = orderData.warna;
+            }
+            if(step === 6) orderData.konten = document.getElementById('inputKonten').value;
+
+            // Simple validation check
+            if(step === 2 && !orderData.ukuran) return alert("Isi ukuran dulu!");
+            
+            currentStep++;
+            updateProgress();
         }
 
         function prevStep() {
-            if (currentStep > 1) {
+            if(currentStep > 1) {
                 currentStep--;
-                updateUI();
+                updateProgress();
             }
         }
 
-        function selectService(service, el) {
-            // Reset selection visual
-            document.querySelectorAll('#step1 .option-card').forEach(c => c.classList.remove('selected'));
-            el.classList.add('selected');
-            
-            orderData.layanan = service;
-            setTimeout(() => nextStep(), 300);
-        }
-
-        function selectColor(color, el) {
-            document.querySelectorAll('.color-card').forEach(c => c.classList.remove('selected'));
-            el.classList.add('selected');
-            
+        function setColor(color) {
             orderData.warna = color;
-            const customGroup = document.getElementById('customColorGroup');
+            document.querySelectorAll('.color-card').forEach(c => c.classList.remove('selected'));
+            event.currentTarget.classList.add('selected');
             
-            if (color === 'Custom') {
-                customGroup.style.display = 'block';
-                document.getElementById('inputCustomColor').focus();
-            } else {
-                customGroup.style.display = 'none';
-                orderData.customWarna = ''; // reset custom
-            }
+            const customInput = document.getElementById('inputWarnaCustom');
+            if(color === 'Custom') customInput.style.display = 'block';
+            else customInput.style.display = 'none';
         }
 
-        function selectStyle(style, el) {
-            document.querySelectorAll('.radio-card').forEach(c => c.classList.remove('selected'));
-            el.classList.add('selected');
+        function setStyle(style) {
             orderData.gaya = style;
+            document.querySelectorAll('.radio-card').forEach(c => c.classList.remove('selected'));
+            event.currentTarget.classList.add('selected');
         }
 
-        function saveStepData(step) {
-            if (step === 2) orderData.ukuran = document.getElementById('inputUkuran').value;
-            if (step === 3) orderData.jumlah = document.getElementById('inputJumlah').value;
-            if (step === 4) {
-                orderData.namaUsaha = document.getElementById('inputNamaUsaha').value;
-                orderData.tagline = document.getElementById('inputTagline').value;
-            }
-            if (step === 5 && orderData.warna === 'Custom') {
-                orderData.customWarna = document.getElementById('inputCustomColor').value;
-            }
-            if (step === 6) orderData.informasi = document.getElementById('inputKonten').value;
-            if (step === 7) {
-                orderData.elemen = document.getElementById('inputElemen').value;
-                orderData.catatan = document.getElementById('inputCatatan').value;
-            }
-        }
-
-        function validateStep(step) {
-            let isValid = true;
+        function sendToWA() {
+            orderData.catatan = document.getElementById('inputCatatan').value;
             
-            if (step === 2) {
-                const val = document.getElementById('inputUkuran').value.trim();
-                if (!val) { alert("Mohon isi ukuran pesanan"); isValid = false; }
-            }
-            if (step === 3) {
-                const val = document.getElementById('inputJumlah').value;
-                if (!val || val < 1) { alert("Jumlah minimal 1"); isValid = false; }
-            }
-            if (step === 4) {
-                const val = document.getElementById('inputNamaUsaha').value.trim();
-                if (!val) { alert("Nama Usaha/Judul wajib diisi"); isValid = false; }
-            }
-            if (step === 5) {
-                if (!orderData.warna) { alert("Pilih kombinasi warna"); isValid = false; }
-                else if (orderData.warna === 'Custom') {
-                    const customVal = document.getElementById('inputCustomColor').value.trim();
-                    if (!customVal) { alert("Sebutkan warna custom yang diinginkan"); isValid = false; }
-                }
-            }
-            if (step === 6) {
-                const val = document.getElementById('inputKonten').value.trim();
-                if (!val) { alert("Informasi konten wajib diisi"); isValid = false; }
-            }
-            if (step === 7) {
-                if (!orderData.gaya) { alert("Pilih gaya desain"); isValid = false; }
-            }
+            if(!orderData.gaya) return alert("Pilih gaya desain dulu!");
 
-            return isValid;
-        }
+            const text = `*🚀 ORDER BARU - KUKAR PRINTING 3D*
+            
+📦 *Layanan:* ${orderData.layanan}
+📏 *Ukuran:* ${orderData.ukuran}
+🔢 *Jumlah:* ${orderData.jumlah}
 
-        function submitOrder() {
-            if (!validateStep(7)) return;
-            saveStepData(7); // Save final inputs
-
-            const finalWarna = orderData.warna === 'Custom' ? orderData.customWarna : orderData.warna;
-            const taglineText = orderData.tagline ? `💬 Tagline: ${orderData.tagline}\n` : '';
-            const elemenText = orderData.elemen ? `*ELEMEN GAMBAR*\n━━━━━━━━━━━━━━━━━━━━\n${orderData.elemen}\n\n` : '';
-            const catatanText = orderData.catatan ? `*CATATAN TAMBAHAN*\n━━━━━━━━━━━━━━━━━━━━\n${orderData.catatan}\n\n` : '';
-
-            const message = `*🎨 PESANAN BARU - KUKAR PRINTING*
-
-*INFORMASI PESANAN*
-━━━━━━━━━━━━━━━━━━━━
-📦 Layanan: *${orderData.layanan}*
-📏 Ukuran: *${orderData.ukuran}*
-🔢 Jumlah: *${orderData.jumlah} pcs*
-
-*DETAIL DESAIN*
-━━━━━━━━━━━━━━━━━━━━
-🏪 Nama/Judul: *${orderData.namaUsaha}*
-${taglineText}🎨 Warna: ${finalWarna}
+*Detail Desain:*
+🏢 Nama: ${orderData.nama}
+💬 Tagline: ${orderData.tagline}
+🎨 Warna: ${orderData.warnaDetail}
 ✨ Gaya: ${orderData.gaya}
 
-*ISI KONTEN*
-━━━━━━━━━━━━━━━━━━━━
-${orderData.informasi}
+*Konten:*
+${orderData.konten}
 
-${elemenText}${catatanText}━━━━━━━━━━━━━━━━━━━━
-Mohon konfirmasi harga dan estimasi waktu pengerjaan.
-Terima kasih! 🙏`;
+*Catatan:*
+${orderData.catatan}
 
-            const encodedMessage = encodeURIComponent(message);
-            const waLink = `https://wa.me/6285845982732?text=${encodedMessage}`;
-            
-            window.open(waLink, '_blank');
-            closeOrderModal();
+---------------------------
+Mohon info harga. Terima kasih!`;
+
+            window.open(`https://wa.me/6285845982732?text=${encodeURIComponent(text)}`);
+            closeModal();
         }
 
-        function resetForm() {
-            currentStep = 1;
-            // Clear inputs
-            document.querySelectorAll('input').forEach(i => i.value = '');
-            document.querySelectorAll('textarea').forEach(i => i.value = '');
-            // Clear selections
-            document.querySelectorAll('.selected').forEach(el => el.classList.remove('selected'));
-            document.getElementById('customColorGroup').style.display = 'none';
-            // Reset Data Object
-            for (let key in orderData) orderData[key] = '';
-        }
     </script>
 </body>
 </html>
