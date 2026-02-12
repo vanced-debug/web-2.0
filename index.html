@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KUKAR PRINTING - 3D Dark Experience</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #05070a;
+            --card-bg: rgba(20, 25, 35, 0.8);
+            --primary: #3b82f6;
+            --accent: #00f2ff;
+            --text: #f8fafc;
+            --glass: rgba(255, 255, 255, 0.03);
+            --border: rgba(255, 255, 255, 0.1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            overflow-x: hidden;
+            background: radial-gradient(circle at 50% 0%, #1e293b 0%, #05070a 70%);
+            line-height: 1.6;
+        }
+
+        /* Navigasi Glassmorphism */
+        .navbar {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            max-width: 1200px;
+            background: rgba(10, 15, 25, 0.8);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.8);
+        }
+
+        .logo {
+            font-size: 1.4rem;
+            font-weight: 800;
+            background: linear-gradient(to right, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Hero Section dengan Efek 3D */
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            perspective: 1200px;
+        }
+
+        .hero-content {
+            transform-style: preserve-3d;
+            animation: heroFloat 5s ease-in-out infinite;
+            padding: 20px;
+        }
+
+        @keyframes heroFloat {
+            0%, 100% { transform: translateZ(0) rotateX(2deg); }
+            50% { transform: translateZ(60px) rotateX(-2deg); }
+        }
+
+        .hero-title {
+            font-size: clamp(2.5rem, 8vw, 5.5rem);
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 20px;
+        }
+
+        .glow {
+            color: var(--accent);
+            text-shadow: 0 0 20px rgba(0, 242, 255, 0.6);
+        }
+
+        /* Button 3D */
+        .btn-3d {
+            padding: 1rem 2.5rem;
+            background: var(--primary);
+            border: none;
+            border-radius: 15px;
+            color: white;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.2s;
+            box-shadow: 0 8px 0 #1e40af, 0 15px 30px rgba(0,0,0,0.5);
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-3d:active {
+            transform: translateY(4px);
+            box-shadow: 0 4px 0 #1e40af, 0 8px 15px rgba(0,0,0,0.5);
+        }
+
+        /* Kartu Layanan 3D */
+        .services { padding: 100px 20px; max-width: 1200px; margin: 0 auto; }
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+        }
+
+        .service-card {
+            background: var(--card-bg);
+            padding: 50px 30px;
+            border-radius: 30px;
+            border: 1px solid var(--border);
+            transition: 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+            transform-style: preserve-3d;
+            cursor: pointer;
+        }
+
+        .service-card:hover {
+            transform: rotateY(15deg) rotateX(10deg) translateY(-10px);
+            background: rgba(30, 41, 59, 0.9);
+            border-color: var(--accent);
+            box-shadow: -20px 20px 60px rgba(0,0,0,0.7);
+        }
+
+        .service-icon {
+            font-size: 4rem;
+            display: block;
+            margin-bottom: 20px;
+            transform: translateZ(60px);
+        }
+
+        .service-title { color: var(--accent); transform: translateZ(40px); margin-bottom: 10px; }
+
+        /* Modal Redesign */
+        .modal {
+            display: none; position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.95);
+            backdrop-filter: blur(10px);
+            z-index: 2000; align-items: center; justify-content: center;
+        }
+
+        .modal.active { display: flex; }
+
+        .modal-content {
+            background: #0f121a;
+            border: 1px solid var(--primary);
+            border-radius: 30px;
+            width: 90%; max-width: 500px;
+            padding: 40px; position: relative;
+        }
+
+        .form-input {
+            width: 100%; padding: 15px; margin: 10px 0 20px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--border);
+            border-radius: 10px; color: white;
+        }
+
+        .close-btn { position: absolute; top: 20px; right: 20px; color: white; cursor: pointer; font-size: 1.5rem; }
+
+        footer { text-align: center; padding: 50px; opacity: 0.5; font-size: 0.8rem; }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="logo">KUKAR PRINTING</div>
+        <button class="btn-3d" style="padding: 0.5rem 1rem; font-size: 0.8rem;" onclick="toggleModal()">ORDER</button>
+    </nav>
+
+    <section class="hero">
+        <div class="hero-content">
+            <h1 class="hero-title">Printing <br><span class="glow">Evolution.</span></h1>
+            <p style="margin-bottom: 30px; opacity: 0.7;">Jasa Percetakan Profesional & Modern di Kutai Kartanegara</p>
+            <button class="btn-3d" onclick="toggleModal()">MULAI SEKARANG</button>
+        </div>
+    </section>
+
+    <section class="services">
+        <div class="services-grid">
+            <div class="service-card" onclick="toggleModal()">
+                <span class="service-icon">🖼️</span>
+                <h3 class="service-title">Banner & Spanduk</h3>
+                <p style="opacity: 0.7;">Cetak tajam, material premium, tahan lama.</p>
+            </div>
+            <div class="service-card" onclick="toggleModal()">
+                <span class="service-icon">🎨</span>
+                <h3 class="service-title">Desain Grafis</h3>
+                <p style="opacity: 0.7;">Desain kreatif untuk identitas bisnis Anda.</p>
+            </div>
+            <div class="service-card" onclick="toggleModal()">
+                <span class="service-icon">🏷️</span>
+                <h3 class="service-title">Stiker Custom</h3>
+                <p style="opacity: 0.7;">Potongan presisi dengan berbagai jenis bahan.</p>
+            </div>
+        </div>
+    </section>
+
+    <div id="orderModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="toggleModal()">&times;</span>
+            <h2 style="color: var(--accent); margin-bottom: 20px;">Form Pesanan</h2>
+            <label>Pilih Layanan</label>
+            <select id="layanan" class="form-input">
+                <option value="Banner">Banner & Spanduk</option>
+                <option value="Desain">Desain Grafis</option>
+                <option value="Stiker">Stiker Custom</option>
+            </select>
+            <label>Ukuran / Detail</label>
+            <input type="text" id="detail" class="form-input" placeholder="Contoh: 3x1 meter">
+            <button class="btn-3d" style="width: 100%;" onclick="kirimWA()">KIRIM KE WHATSAPP</button>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 KUKAR PRINTING - Kutai Kartanegara</p>
+    </footer>
+
+    <script>
+        function toggleModal() {
+            document.getElementById('orderModal').classList.toggle('active');
+        }
+
+        function kirimWA() {
+            const layanan = document.getElementById('layanan').value;
+            const detail = document.getElementById('detail').value;
+            if(!detail) return alert("Isi detail pesanan dulu ya!");
+            
+            const teks = `Halo Kukar Printing, saya mau pesan:\nLayanan: ${layanan}\nDetail: ${detail}`;
+            window.open(`https://wa.me/6285845982732?text=${encodeURIComponent(teks)}`, '_blank');
+        }
+    </script>
+</body>
+</html>
